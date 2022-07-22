@@ -20,7 +20,7 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public AddStudentResponse addStudent(AddStudentRequest request) {
-        if(studentRepository.existsByEmail(request.getEmail()))throw new StudentExistException("Student already exist");
+        if(studentRepository.existsByEmail(request.getEmail()))throw new StudentExistException("email taken");
         Student student = new Student();
         Mapper.map(request, student);
 
@@ -28,6 +28,7 @@ public class StudentServiceImpl implements StudentService{
         studentId ="ST"+ studentId.substring(1, 4);
 
         student.setStudentId(studentId);
+
 
         if(studentRepository.existsByStudentId(student.getStudentId())){
             String studentId1;
