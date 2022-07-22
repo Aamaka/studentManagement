@@ -13,5 +13,5 @@ public interface StudentService {
     AddStudentResponse addStudent(AddStudentRequest request);
      List<Student> getAllStudent();
 
-     DeleteStudentResponse delete(DeleteStudentRequest request);
+     DeleteStudentResponse delete(String request);
 }
