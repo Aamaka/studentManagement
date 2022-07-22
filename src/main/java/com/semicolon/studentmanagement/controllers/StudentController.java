@@ -3,8 +3,8 @@ package com.semicolon.studentmanagement.controllers;
 import com.semicolon.studentmanagement.data.models.Student;
 import com.semicolon.studentmanagement.dto.Responses.AddStudentResponse;
 import com.semicolon.studentmanagement.dto.Responses.DeleteStudentResponse;
+import com.semicolon.studentmanagement.dto.Responses.UpdateResponse;
 import com.semicolon.studentmanagement.dto.requests.AddStudentRequest;
-import com.semicolon.studentmanagement.dto.requests.DeleteStudentRequest;
 import com.semicolon.studentmanagement.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +31,12 @@ public class StudentController {
     @DeleteMapping(path = "/{studentId}")
     public DeleteStudentResponse deleteStudent(@PathVariable("studentId") String studentId){
         return service.delete(studentId);
+    }
+
+    @PutMapping(path = "/{studentId}")
+    public UpdateResponse updateStudent(@PathVariable("studentId") String id, @RequestParam(required = false) String name, @RequestParam String email){
+        return service.updateStudent(id, name, email);
+
     }
 
 }

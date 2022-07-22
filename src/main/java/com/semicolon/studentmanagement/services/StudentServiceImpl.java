@@ -4,13 +4,15 @@ import com.semicolon.studentmanagement.data.models.Student;
 import com.semicolon.studentmanagement.data.repositories.StudentRepository;
 import com.semicolon.studentmanagement.dto.Responses.AddStudentResponse;
 import com.semicolon.studentmanagement.dto.Responses.DeleteStudentResponse;
+import com.semicolon.studentmanagement.dto.Responses.UpdateResponse;
 import com.semicolon.studentmanagement.dto.requests.AddStudentRequest;
-import com.semicolon.studentmanagement.dto.requests.DeleteStudentRequest;
 import com.semicolon.studentmanagement.exceptions.StudentExistException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -63,5 +65,30 @@ public class StudentServiceImpl implements StudentService{
             response.setMessage("Deletion successful");
             return response;
         }
+    }
+
+    @Override @Transactional
+    public UpdateResponse updateStudent(String id, String name, String email) {
+        Student student = studentRepository.findById(Integer.valueOf(id)).
+                orElseThrow(() -> new StudentExistException("student with id "+ id + "does not exist"));
+        UpdateResponse response = new UpdateResponse();
+
+
+        if(name != null && name.length() > 0 && !Objects.equals(student.getName(), name)){
+            student.setName(name);
+            response.setMessage("updated "+ student.getName());
+        }
+
+        if(email != null && email.length() > 0 && !Objects.equals(student.getEmail(), email)){
+
+            Optional<Student> student1 = studentRepository.findByEmail(email);
+            if(student1.isPresent()){
+                throw new StudentExistException("email taken");
+            }
+            student.setEmail(email);
+            response.setMessage("updated "+ student.getName());
+        }
+
+        return response;
     }
 }
