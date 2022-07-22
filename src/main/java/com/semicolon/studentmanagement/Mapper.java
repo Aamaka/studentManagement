@@ -9,7 +9,7 @@ public class Mapper {
     public static void map(AddStudentRequest request, Student student) {
         student.setName(request.getName());
         student.setAddress(request.getAddress());
-        student.setDob(request.getDob());
+//        student.setDob(request.getDob());
         student.setEmail(request.getEmail());
     }
 

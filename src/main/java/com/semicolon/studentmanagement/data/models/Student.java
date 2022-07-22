@@ -21,14 +21,14 @@ public class Student {
     private String email;
     @NonNull
     private String address;
-    @NonNull
-    private LocalDate dob;
-    @Transient
-    private int age;
+
+//    private LocalDate dob;
+
+//    private int age;
 
     private String studentId;
-
-    public int getAge(){
-        return Period.between(this.dob, LocalDate.now()).getYears();
-    }
+//
+//    public int getAge(){
+//        return Period.between(this.dob, LocalDate.now()).getYears();
+//    }
 }
