@@ -6,17 +6,18 @@ import com.semicolon.studentmanagement.dto.Responses.DeleteStudentResponse;
 import com.semicolon.studentmanagement.dto.Responses.UpdateResponse;
 import com.semicolon.studentmanagement.dto.requests.AddStudentRequest;
 import com.semicolon.studentmanagement.services.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/student")
+@AllArgsConstructor
 public class StudentController {
 
-    @Autowired
-    private StudentService service;
+
+    private final StudentService service;
 
     @PostMapping("/add")
     public AddStudentResponse add(@RequestBody AddStudentRequest student){
@@ -34,9 +35,14 @@ public class StudentController {
     }
 
     @PutMapping(path = "/{studentId}")
-    public UpdateResponse updateStudent(@PathVariable("studentId") String id, @RequestParam(required = false) String name, @RequestParam String email){
+    public UpdateResponse updateStudent(@PathVariable("studentId") String id, @RequestParam(required = false) String name, @RequestParam(required = false) String email){
         return service.updateStudent(id, name, email);
 
+    }
+
+    @GetMapping("/name")
+    public Student findStudentByName(@RequestBody String name){
+        return service.findStudentByName(name);
     }
 
 }

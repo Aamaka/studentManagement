@@ -91,4 +91,20 @@ public class StudentServiceImpl implements StudentService{
 
         return response;
     }
+
+    @Override
+    public Student findStudentByName(String name) {
+        Optional<Student> student = studentRepository.findStudentByName(name);
+        if(student.isPresent()){
+            if(student.get().getName().equalsIgnoreCase(name)){
+                return student.get();
+            }else {
+                throw new StudentExistException("student not found");
+            }
+
+        }else {
+            throw new StudentExistException("student does not exist");
+        }
+
+    }
 }

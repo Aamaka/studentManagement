@@ -16,5 +16,7 @@ public interface StudentService {
      DeleteStudentResponse delete(String request);
 
     UpdateResponse updateStudent(String id, String name, String email);
+
+    Student findStudentByName(String name);
 }
 
