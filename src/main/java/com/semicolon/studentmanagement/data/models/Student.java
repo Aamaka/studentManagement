@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
+
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
