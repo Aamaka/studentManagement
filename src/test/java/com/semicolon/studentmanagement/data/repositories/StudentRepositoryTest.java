@@ -1,7 +1,8 @@
 package com.semicolon.studentmanagement.data.repositories;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 class StudentRepositoryTest {
 
 
