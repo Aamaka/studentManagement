@@ -6,6 +6,7 @@ import com.semicolon.studentmanagement.dto.Responses.AddStudentResponse;
 import com.semicolon.studentmanagement.dto.Responses.DeleteStudentResponse;
 import com.semicolon.studentmanagement.dto.Responses.UpdateResponse;
 import com.semicolon.studentmanagement.dto.requests.AddStudentRequest;
+import com.semicolon.studentmanagement.dto.requests.UpdateStudentRequest;
 import com.semicolon.studentmanagement.exceptions.StudentExistException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class StudentServiceImpl implements StudentService{
         Mapper.map(request, student);
 
         String studentId = String.valueOf(UUID.randomUUID().getMostSignificantBits());
-        studentId ="ST"+ studentId.substring(1, 4);
+        studentId = "ST"+ studentId.substring(1, 4);
 
         student.setStudentId(studentId);
 
@@ -54,13 +55,13 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public DeleteStudentResponse delete(String request) {
-        Optional<Student> exist = studentRepository.findById(Integer.valueOf(request));
+    public DeleteStudentResponse delete(long id) {
+        Optional<Student> exist = studentRepository.findById(id);
         if(exist.isEmpty()){
             throw new StudentExistException("student does not exist");
         }
         else {
-            studentRepository.deleteById(Integer.valueOf(request));
+            studentRepository.deleteById(id);
             DeleteStudentResponse response = new DeleteStudentResponse();
             response.setMessage("Deletion successful");
             return response;
@@ -68,38 +69,45 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override @Transactional
-    public UpdateResponse updateStudent(String id, String name, String email) {
-        Student student = studentRepository.findById(Integer.valueOf(id)).
+    public UpdateResponse updateStudent(long id, UpdateStudentRequest request) {
+        Student student = studentRepository.findById(id).
                 orElseThrow(() -> new StudentExistException("student with id "+ id + "does not exist"));
         UpdateResponse response = new UpdateResponse();
 
 
-        if(name != null && name.length() > 0 && !Objects.equals(student.getName(), name)){
-            student.setName(name);
-            response.setMessage("updated "+ student.getName());
+        if(request.getFirstName() != null && request.getFirstName().length() > 0 && !Objects.equals(student.getFirstName(), request.getFirstName())){
+            student.setFirstName(request.getFirstName());
+            response.setMessage("updated "+ student.getFirstName());
+        }
+        if(request.getLastName() != null && request.getLastName().length() > 0 && !Objects.equals(student.getLastName(), request.getLastName())){
+            student.setLastName(request.getLastName());
+            response.setMessage("updated "+ student.getLastName());
         }
 
-        if(email != null && email.length() > 0 && !Objects.equals(student.getEmail(), email)){
+        if(request.getEmail() != null && request.getEmail().length() > 0 && !Objects.equals(student.getEmail(), request.getEmail())){
 
-            Optional<Student> student1 = studentRepository.findByEmail(email);
+            Optional<Student> student1 = studentRepository.findByEmail(request.getEmail());
             if(student1.isPresent()){
                 throw new StudentExistException("email taken");
             }
-            student.setEmail(email);
-            response.setMessage("updated "+ student.getName());
+            student.setEmail(request.getEmail());
+            response.setMessage("updated "+ student.getFirstName());
         }
 
         return response;
     }
 
     @Override
-    public Student findStudentByName(String name) {
-        Optional<Student> student = studentRepository.findStudentByName(name);
-        if(student.isPresent()){
-            return student.get();
-        }else {
-            throw new StudentExistException("student does not exist");
+    public Student findStudentByName(String firstName, String lastName) {
+        Optional<Student> student = studentRepository.findStudentByFirstNameAndLastName(firstName, lastName);
+        Student study = student.get();
+        if(firstName.equals(study.getFirstName())
+                && lastName.equals(study.getLastName())
+                || firstName.equals(study.getLastName())
+                && lastName.equals(study.getFirstName())){
+            return study;
         }
+       throw new StudentExistException("Student does not exist");
 
     }
 }

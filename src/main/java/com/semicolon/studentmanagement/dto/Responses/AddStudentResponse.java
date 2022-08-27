@@ -7,5 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddStudentResponse {
     private String message;
+    private String studentId;
 
 }
