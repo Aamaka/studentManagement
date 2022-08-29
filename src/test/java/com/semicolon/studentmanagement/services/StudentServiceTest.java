@@ -6,6 +6,7 @@ import com.semicolon.studentmanagement.dto.Responses.DeleteStudentResponse;
 import com.semicolon.studentmanagement.dto.Responses.UpdateResponse;
 import com.semicolon.studentmanagement.dto.requests.AddStudentRequest;
 import com.semicolon.studentmanagement.dto.requests.UpdateStudentRequest;
+import com.semicolon.studentmanagement.exceptions.StudentExistException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +48,8 @@ class StudentServiceTest {
     @Test
     @DisplayName("Delete a student from database")
     public void testThatAStudentCanBeDeleted(){
-        DeleteStudentResponse student = service.delete(1L);
-        assertEquals("student does not exist",student.getMessage());
+//        DeleteStudentResponse student = service.delete(1L);
+        assertThrows(StudentExistException.class, ()->service.delete(1L));
     }
 
     @Test
@@ -58,6 +59,13 @@ class StudentServiceTest {
         request.setEmail("hopeL@gmail.com");
         UpdateResponse response = service.updateStudent(3, request);
         assertEquals("updated Love" , response.getMessage());
+    }
+
+    @Test
+    @DisplayName("find a student by first name and last name")
+    public void findAStudentByNameTest(){
+        Student student = service.findStudentByName("love", "Hope");
+        assertEquals("hopeL@gmail.com", student.getEmail());
     }
 
 }

@@ -99,15 +99,10 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public Student findStudentByName(String firstName, String lastName) {
-        Optional<Student> student = studentRepository.findStudentByFirstNameAndLastName(firstName, lastName);
-        Student study = student.get();
-        if(firstName.equals(study.getFirstName())
-                && lastName.equals(study.getLastName())
-                || firstName.equals(study.getLastName())
-                && lastName.equals(study.getFirstName())){
-            return study;
+        Optional<Student> student = studentRepository.findStudentByFirstNameIgnoreCaseAndLastNameIgnoreCase(firstName, lastName);
+        if (student.isPresent()){
+            return student.get();
         }
        throw new StudentExistException("Student does not exist");
-
     }
 }
