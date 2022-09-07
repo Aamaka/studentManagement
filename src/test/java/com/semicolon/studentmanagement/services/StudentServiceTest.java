@@ -1,5 +1,4 @@
 package com.semicolon.studentmanagement.services;
-
 import com.semicolon.studentmanagement.data.models.Student;
 import com.semicolon.studentmanagement.dto.Responses.AddStudentResponse;
 import com.semicolon.studentmanagement.dto.Responses.DeleteStudentResponse;
@@ -11,9 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -48,7 +45,7 @@ class StudentServiceTest {
     @Test
     @DisplayName("Delete a student from database")
     public void testThatAStudentCanBeDeleted(){
-//        DeleteStudentResponse student = service.delete(1L);
+        DeleteStudentResponse student = service.delete(1L);
         assertThrows(StudentExistException.class, ()->service.delete(1L));
     }
 
