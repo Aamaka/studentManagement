@@ -16,7 +16,7 @@ public class Mapper {
         student.setEmail(request.getEmail());
         student.setPhoneNumber(request.getPhoneNumber());
     }
-
+    
     public static void map(Student saveStudent, AddStudentResponse response) {
         response.setMessage(saveStudent.getFirstName()+" ,Welcome to Semicolon.");
         response.setStudentId("STUDENTID: "+saveStudent.getStudentId());
